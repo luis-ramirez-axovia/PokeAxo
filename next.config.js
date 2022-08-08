@@ -2,6 +2,20 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  env: {
+    customKey: 'customValue',
+  },
+  basePath: '/dist',
+  compress: true,
+  async redirects() {
+    return [
+      {
+        source: '/hola',
+        destination: '/hello', //https://pagedirection
+        permanent: true,
+      }
+    ]
+  } 
 }
 
 module.exports = nextConfig
