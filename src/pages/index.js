@@ -1,44 +1,74 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState} from 'react'
 import styles from '../styles/Home.module.css'
 
+import { API_POKEMON } from '@constants/utils/apiCalls'
+import Title from '@components/title/Title'
+
 export default function Home() {
+  const [pokemones, setPokemones] = useState([]);
+  useEffect(() => {
+    async function fetchData(){
+      const response = await fetch(`${API_POKEMON}?offset=0&limit=12`)
+      const pokemons = await response.json()
+      const promises = []; 
+      for (let index = 1; index <= 12; index++){
+        promises.push(fetch(`${API_POKEMON}/${index}`).then(resp => resp.json()));
+      }
+      Promise.all(promises).then(res => {
+        setPokemones({ pokemons:pokemons.results, datails:res });
+      })
+    }
+    fetchData();
+    console.log(pokemones);
+  }, [])
+  
   return (
-    <div className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="lg:text-center">
-          <h2 className="text-base text-red-500 font-semibold">Good Morning</h2>
-          <p className="mt-2 text-blue-800 text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl">Welcome to KindaCode.com</p>
+    <div className="py-12 bg-white mx-8">
+
+      <Title />
+
+      <section className='section-order flex mb-10'>
+        <div className='buton-sorprender w-1/2'>
+          <button className='bg-[#30a7d7] text-white rounded-sm h-10 px-16'>
+            <i className='icon icon_refresh'></i>
+            ¡Sorpréndeme!
+          </button>
         </div>
-
-        <div className="mt-10 space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-          <div
-            className="bg-amber-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-red-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-green-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-purple-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
+        <div className='sort-by w-1/2'>
+          Ordenar por
+          <select className='bd-[#313131] color-[#313131] text-white'>
+            <option>Numero inferior</option>
+            <option>Numero superior</option>
+            <option>A-Z</option>
+            <option>Z-A</option>
+          </select>
         </div>
+      </section>
 
-
-      </div>
+        <div className='content grid grid-cols-2 gap-4'>
+            {pokemones.pokemons && pokemones.pokemons.map((item, index) => (
+                <div key={index} className='card bg-[#f2f2f2] rounded-md'>
+                  <div className='card-image h-[306px]'>
+                    <img src={pokemones.datails[index].sprites.front_default} />
+                  </div>
+                  <div className='card-content ml-4'>
+                    <span className='text-[#919191] text-xs font-exo2 font-bold'>
+                      N.º {pokemones.datails[index].id || '#'}
+                    </span>
+                    <h5 className='font-exo2'>{item.name || ''}</h5>
+                    <div className='flex mb-4 mt-2'>
+                      {[1,2].map((tag, index) => (
+                        <span className='tags text-xs text-center rounded font-exo2 font-light bg-blue-200 mx-2 ml-0 h-4 w-1/3'>
+                          tag
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+            ))}
+        </div>
     </div>
   )
 }
