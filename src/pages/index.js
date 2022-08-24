@@ -7,29 +7,6 @@ import { API_POKEMON } from '@constants/utils/apiCalls'
 import Title from '@components/title/Title'
 import TagCard from '@components/tagCard/TagCard'
 
-const types = {
-    "normal": "background-color-normal",
-    "fighting": "background-color-fighting",
-    "flying": "background-color-flying",
-    "poison": "background-color-poison",
-    "ground": "background-color-ground",
-    "rock": "background-color-rock",
-    "bug": "background-color-bug",
-    "ghost": "background-color-ghost",
-    "steel": "background-color-steel",
-    "fire": "background-color-fire",
-    "water": "background-color-water",
-    "grass": "background-color-grass",
-    "electric": "background-color-electric",
-    "psychic": "background-color-psychic",
-    "ice": "background-color-ice",
-    "dragon": "background-color-dragon",
-    "dark": "background-color-dark",
-    "fairy": "background-color-fairy",
-    "unknown": "",
-    "shadow": ""
-}
-
 export default function Home() {
   const [pokemones, setPokemones] = useState([]);
   useEffect(() => {
