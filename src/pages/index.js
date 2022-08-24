@@ -5,6 +5,30 @@ import styles from '../styles/Home.module.css'
 
 import { API_POKEMON } from '@constants/utils/apiCalls'
 import Title from '@components/title/Title'
+import TagCard from '@components/tagCard/TagCard'
+
+const types = {
+    "normal": "background-color-normal",
+    "fighting": "background-color-fighting",
+    "flying": "background-color-flying",
+    "poison": "background-color-poison",
+    "ground": "background-color-ground",
+    "rock": "background-color-rock",
+    "bug": "background-color-bug",
+    "ghost": "background-color-ghost",
+    "steel": "background-color-steel",
+    "fire": "background-color-fire",
+    "water": "background-color-water",
+    "grass": "background-color-grass",
+    "electric": "background-color-electric",
+    "psychic": "background-color-psychic",
+    "ice": "background-color-ice",
+    "dragon": "background-color-dragon",
+    "dark": "background-color-dark",
+    "fairy": "background-color-fairy",
+    "unknown": "",
+    "shadow": ""
+}
 
 export default function Home() {
   const [pokemones, setPokemones] = useState([]);
@@ -21,9 +45,9 @@ export default function Home() {
       })
     }
     fetchData();
-    console.log(pokemones);
   }, [])
   
+  console.log(pokemones);
   return (
     <div className="py-12 bg-white mx-8">
 
@@ -50,8 +74,8 @@ export default function Home() {
         <div className='content grid grid-cols-2 gap-4'>
             {pokemones.pokemons && pokemones.pokemons.map((item, index) => (
                 <div key={index} className='card bg-[#f2f2f2] rounded-md'>
-                  <div className='card-image h-[306px]'>
-                    <img src={pokemones.datails[index].sprites.front_default} />
+                  <div className='card-image h-[306px] bg-no-repeat bg-center bg-contain' 
+                    style={{'backgroundImage': `url(${pokemones.datails[index].sprites.front_default})`}}>
                   </div>
                   <div className='card-content ml-4'>
                     <span className='text-[#919191] text-xs font-exo2 font-bold'>
@@ -59,11 +83,9 @@ export default function Home() {
                     </span>
                     <h5 className='font-exo2'>{item.name || ''}</h5>
                     <div className='flex mb-4 mt-2'>
-                      {[1,2].map((tag, index) => (
-                        <span className='tags text-xs text-center rounded font-exo2 font-light bg-blue-200 mx-2 ml-0 h-4 w-1/3'>
-                          tag
-                        </span>
-                      ))}
+                      {pokemones.datails[index].types.map((type, index) => (
+                        <TagCard key={index} name={type.type.name} />
+                        ))}
                     </div>
                   </div>
                 </div>
