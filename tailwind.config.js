@@ -12,6 +12,14 @@ module.exports = {
       fontFamily: {
         'exo2': ['Exo2', 'sans-serif'],
         'silkscreen': ['Silkscreen', 'cursive']
+      },
+      screens: {
+        'tablet': '640px',
+        'laptop': '1024px',
+        'desktop': '1280px',
+      },
+      flex: {
+        '100': '1 1 100%',
       }
     },
   },
