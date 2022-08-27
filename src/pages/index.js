@@ -26,11 +26,11 @@ export default function Home() {
   
   console.log(pokemones);
   return (
-    <div className="py-12 mx-8 text-center">
+    <div className="py-12 mx-8 text-center test-test">
 
       <Title />
 
-      <section className='section-order flex mb-10'>
+      <section className='section-order flex mb-10 '>
         <div className='buton-sorprender w-1/2'>
           <button className='bg-[#30a7d7] text-white rounded-sm h-10 px-16'>
             <i className='icon icon_refresh'></i>
@@ -48,19 +48,19 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='content w-11/12 bg-white'>
-        <div className='grid grid-cols-2 tablet:grid-cols-3 laptop:grid-cols-4  gap-4'>
+      <section className='content w-11/12 bg-white mx-auto'>
+        <div className='grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4  gap-4'>
             {pokemones.pokemons && pokemones.pokemons.map((item, index) => (
                 <div key={index} className='card flex flex-col bg-[#f2f2f2] rounded-md'>
                   <div className='card-image flex-auto self-center  bg-no-repeat bg-center bg-contain' 
                     // style={{'backgroundImage': `url(${pokemones.datails[index].sprites.front_default})`}}
                   >
-                      <img 
+                      {/* <img 
                         className='tablet:hidden' 
                         src={`${pokemones.datails[index].sprites.front_default}`} 
-                      />
+                      /> */}
                       <img 
-                        className='hidden tablet:block' 
+                        className='' 
                         src={`${pokemones.datails[index].sprites.other['official-artwork'].front_default}`} 
                       />
                   </div>

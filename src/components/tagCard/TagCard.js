@@ -31,7 +31,7 @@ const TagCard = ({ name }) => {
         rounded font-exo2 
         font-light bg-blue-200 
         mx-2 ml-0 h-4 w-1/3 
-        ${bgColor[`${types[name]}`]}
+        ${types[name]}
       `}>
       {name}
     </span>
