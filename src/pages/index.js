@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState} from 'react'
+import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
 
 import { API_POKEMON } from '@constants/utils/apiCalls'
@@ -11,9 +12,18 @@ import iconRefresh  from '@public/refresh_white.png'
 import iconPokeball from '@public/pokeball_white.jpg'
 import iconSearch from '@public/search.png'
 
+import en from '@public/locales/en'
+import es from '@public/locales/es'
+import Link from 'next/link'
+
 export default function Home({ data, details }) {
   console.log('server', data, details);
   const [pokemones, setPokemones] = useState([]);
+  const router = useRouter();
+
+  const locale = router.locale === 'es' ? es : en
+  console.log('locals',locale);
+
   useEffect(() => {
     async function fetchData(){
       const response = await fetch(`${API_POKEMON}?offset=0&limit=12`)
@@ -31,13 +41,20 @@ export default function Home({ data, details }) {
 
   return (
     <div className="py-12 bg-content max-w-[1300px] mx-auto">
+
+        <div className='fixed top-0 right-0 bg-[#414141] h-14 w-20 text-white flex'>
+        <Link href="/" locale={router.locale === 'en' ?'es':'en'}>
+          <a className='font-exo2 self-center text-lg mx-auto'>{locale.locale}</a>
+        </Link>
+        </div>
+
         <Title />
         <section className='bg-[#313131] w-full py-8'>
         <div className='content mx-auto md:w-[85%] max-w-7xl'>
           <div className='flex flex-col lg:flex-row w-[80%] lg:w-auto lg:px-10 mx-auto'>
             <div className='lg:w-1/2 lg: mr-10'>
               <h2 className='text-white text-3xl font-exo2 font-medium'>
-                Nombre o número
+                {locale.home.search.text1}
               </h2>
               <div className='mb-4 flex flex-row'>
                 <input 
@@ -50,21 +67,20 @@ export default function Home({ data, details }) {
                 </button>
               </div>
               <p className='text-white font-exo2 mb-10'>
-                ¡Usa la búsqueda avanzada para encontrar Pokémon por su tipo, 
-                debilidad, habilidad y demás datos!
+                {locale.home.search.long_text1}
               </p>
             </div>
 
             <div className='bg-[#4dad5b] items-center hidden lg:flex rounded-sm pt-3 pb-5 px-4 lg:w-1/2'>
               <h2 className='text-white text-2xl font-exo2 font-medium'>
-                Busca un Pokémon por su nombre o usando su número de la Pokédex Nacional.
+                {locale.home.search.long_text2}
               </h2>
             </div>
           </div>
 
           <div className='bg-[#4dad5b] lg:hidden rounded-sm pt-3 pb-5 px-4'>
             <h2 className='text-white text-2xl font-exo2 font-medium'>
-              Busca un Pokémon por su nombre o usando su número de la Pokédex Nacional.
+              {locale.home.search.long_text2}
             </h2>
           </div>
         
@@ -79,17 +95,23 @@ export default function Home({ data, details }) {
             <div className='buton-sorprender w-full md:flex-1-0-50 md:mb-10 mt-10'>
               <button className='flex items-center bg-[#30a7d7] text-white text-xl place-content-center rounded-md h-10 px-16 w-full md:w-auto float-left'>
                 <Image width={20} height={20} src={iconRefresh} />
-                ¡Sorpréndeme!
+                {locale.home.interact.button}
               </button>
             </div>
             <div className='sort-by flex w-full md:w-1/3 md:flex-1-0-50 mb-10 mt-10'>
               <div className='select-container relative flex flex-col md:flex-row w-full justify-right'>
-                <label className='font-exo2 font-bold text-xl text-center md:text-auto'>Ordenar por</label>
+                <label className='font-exo2 font-bold text-xl text-center md:text-auto'>
+                  {locale.home.interact.text}
+                </label>
                 <div className='custom-select relative'>
                   <div className='absolute left-4 top-1'>
                     <Image width={30} height={30} src={iconPokeball} />
                   </div>
                   <select className='select-order bg-[#313131] w-full !z-0 text-white text-xl font-exo2 pl-12 pr-3 h-10 rounded-md hover:bg-[#616161] lg:min-w-[250px] md:ml-2'>
+                    {locale.home.interact.select.map(text => 
+                        <option>{text}</option>
+                      )
+                    }
                     <option>Numero inferior</option>
                     <option>Numero superior</option>
                     <option>A-Z</option>
