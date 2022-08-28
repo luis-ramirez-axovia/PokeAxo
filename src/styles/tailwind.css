@@ -5,6 +5,11 @@
 
 
 /* variantes-> responsive:sm,md,lg,xl , hover:hover, focus:focus, disabled */
+@layer base {
+  body {
+    background: #424242 url('./../public/bg-container.png')
+  }
+}
 
 @layer components {
   /* Color for tags in cards */
@@ -170,4 +175,27 @@
     background-color: #4592c4;
     color: #fff;
   }  
+  /* Color for tags in cards END */
+  /* Content clases */
+  .justify-right {
+    justify-content: right;
+  }
+  .bg-content {
+    background: #fff url('./../public/bg-container.png')
+  }
+  .select-order::before {
+    /* -webkit-appearance: none; */
+    /* -moz-appearance: none; */
+    /* background: transparent; */
+    background-image: url('./../public/pokeball_white.jpg') !important;
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 0px;
+    /* border: 1px solid #dfdfdf; */
+    /* border-radius: 2px; */
+    /* margin-right: 2rem; */
+    /* padding: 1rem; */
+    /* padding-right: 2rem; */
+  }
+  /* Content clases */
 }

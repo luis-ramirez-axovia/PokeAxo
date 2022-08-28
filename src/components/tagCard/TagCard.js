@@ -1,4 +1,3 @@
-import bgColor from './pokeTypes.module.css'
 
 const types = {
   "normal": "background-color-normal",
@@ -26,11 +25,12 @@ const types = {
 const TagCard = ({ name }) => {
   return (
     <span className={`
+        flex justify-center items-center
         tags text-xs text-center
         capitalize 
         rounded font-exo2 
         font-light bg-blue-200 
-        mx-2 ml-0 h-4 w-1/3 
+        mx-2 ml-0 h-5 w-1/3 
         ${types[name]}
       `}>
       {name}

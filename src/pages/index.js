@@ -7,7 +7,11 @@ import { API_POKEMON } from '@constants/utils/apiCalls'
 import Title from '@components/title/Title'
 import TagCard from '@components/tagCard/TagCard'
 
-export default function Home() {
+import iconRefresh  from '@public/refresh_white.png'
+import iconPokeball from '@public/pokeball_white.jpg'
+
+export default function Home({ data, details }) {
+  console.log('server', data, details);
   const [pokemones, setPokemones] = useState([]);
   useEffect(() => {
     async function fetchData(){
@@ -23,62 +27,91 @@ export default function Home() {
     }
     fetchData();
   }, [])
-  
-  console.log(pokemones);
+
   return (
-    <div className="py-12 mx-8 text-center test-test">
+    <div className="py-12 bg-content max-w-[1300px] mx-auto">
+      <div className='content mx-auto md:w-[85%] max-w-7xl'>
+        <Title />
 
-      <Title />
+        <section className='pokemons bg-white px-10'>
 
-      <section className='section-order flex mb-10 '>
-        <div className='buton-sorprender w-1/2'>
-          <button className='bg-[#30a7d7] text-white rounded-sm h-10 px-16'>
-            <i className='icon icon_refresh'></i>
-            ¡Sorpréndeme!
-          </button>
-        </div>
-        <div className='sort-by w-1/2'>
-          Ordenar por
-          <select className='bd-[#313131] color-[#313131] text-white'>
-            <option>Numero inferior</option>
-            <option>Numero superior</option>
-            <option>A-Z</option>
-            <option>Z-A</option>
-          </select>
-        </div>
-      </section>
-
-      <section className='content w-11/12 bg-white mx-auto'>
-        <div className='grid grid-cols-1 tablet:grid-cols-3 laptop:grid-cols-4  gap-4'>
-            {pokemones.pokemons && pokemones.pokemons.map((item, index) => (
-                <div key={index} className='card flex flex-col bg-[#f2f2f2] rounded-md'>
-                  <div className='card-image flex-auto self-center  bg-no-repeat bg-center bg-contain' 
-                    // style={{'backgroundImage': `url(${pokemones.datails[index].sprites.front_default})`}}
-                  >
-                      {/* <img 
-                        className='tablet:hidden' 
-                        src={`${pokemones.datails[index].sprites.front_default}`} 
-                      /> */}
-                      <img 
-                        className='' 
-                        src={`${pokemones.datails[index].sprites.other['official-artwork'].front_default}`} 
-                      />
+          <div className='section-buttons flex flex-col mx-auto md:flex-row font-exo2'>
+            <div className='buton-sorprender w-full md:flex-1-0-50 md:mb-10 mt-10'>
+              <button className='flex items-center bg-[#30a7d7] text-white text-xl place-content-center rounded-md h-10 px-16 w-full md:w-auto float-left'>
+                <Image width={20} height={20} src={iconRefresh} />
+                ¡Sorpréndeme!
+              </button>
+            </div>
+            <div className='sort-by flex w-full md:w-1/3 md:flex-1-0-50 mb-10 mt-10'>
+              <div className='select-container relative flex flex-col md:flex-row w-full justify-right'>
+                <label className='font-exo2 font-bold text-xl text-center md:text-auto'>Ordenar por</label>
+                <div className='custom-select relative'>
+                  <div className='absolute left-4 top-1'>
+                    <Image width={30} height={30} src={iconPokeball} />
                   </div>
-                  <div className='card-content flex-auto bg-white '>
-                    <span className='text-[#919191] text-xs font-exo2 font-bold'>
-                      N.º {pokemones.datails[index].id || '#'}
-                    </span>
-                    <h5 className='font-exo2 capitalize'>{item.name || ''}</h5>
-                    <div className='flex mb-4 mt-2'>
-                      {pokemones.datails[index].types.map((type, index) => (
-                        <TagCard key={index} name={type.type.name} />
-                        ))}
+                  <select className='select-order bg-[#313131] w-full !z-0 text-white text-xl font-exo2 pl-12 pr-3 h-10 rounded-md hover:bg-[#616161] lg:min-w-[250px] md:ml-2'>
+                    <option>Numero inferior</option>
+                    <option>Numero superior</option>
+                    <option>A-Z</option>
+                    <option>Z-A</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4'>
+              {pokemones.pokemons && pokemones.pokemons.map((item, index) => (
+                  <div key={index} className='card flex flex-col justify-center items-center bg-[#f2f2f2] rounded-md'>
+                    <div className='card-image flex-auto self-center  bg-no-repeat bg-center bg-contain' 
+                    >
+                        <Image 
+                          className=''
+                          height={200}
+                          width={200}
+                          src={`${pokemones.datails[index].sprites.other['official-artwork'].front_default}`} 
+                        />
+                    </div>
+                    <div className='card-content flex flex-col w-full bg-white '>
+                      <span className='text-[#919191] text-xs text-start font-exo2 font-bold'>
+                        N.º {pokemones.datails[index].id || '#'}
+                      </span>
+                      <h5 className='font-exo2 capitalize text-start font-bold'>
+                        {item.name || ''}
+                      </h5>
+                      <div className='flex mb-4 mt-2'>
+                        {pokemones.datails[index].types.map((type, index) => (
+                          <TagCard key={index} name={type.type.name} />
+                          ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-            ))}
-        </div>
-      </section>
+              ))}
+          </div>
+        </section>
+
+      </div>
+
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const getPokemons = async () => {
+    const response = await fetch(`${API_POKEMON}?offset=0&limit=12`)
+    const { results } = await response.json()
+    return results;
+  }
+  const data = await getPokemons();
+  // const details = data.map(async pokemon => await getContent);
+  // const getContent = async (pokemon) => {
+  //   const response = await fetch(pokemon.url)
+  //   return response;
+  // }
+  return {
+    props: {
+      data,
+      // details
+    }
+  }
 }
