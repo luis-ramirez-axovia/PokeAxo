@@ -9,6 +9,7 @@ import TagCard from '@components/tagCard/TagCard'
 
 import iconRefresh  from '@public/refresh_white.png'
 import iconPokeball from '@public/pokeball_white.jpg'
+import iconSearch from '@public/search.png'
 
 export default function Home({ data, details }) {
   console.log('server', data, details);
@@ -30,8 +31,47 @@ export default function Home({ data, details }) {
 
   return (
     <div className="py-12 bg-content max-w-[1300px] mx-auto">
-      <div className='content mx-auto md:w-[85%] max-w-7xl'>
         <Title />
+        <section className='bg-[#313131] w-full py-8'>
+        <div className='content mx-auto md:w-[85%] max-w-7xl'>
+          <div className='flex flex-col lg:flex-row w-[80%] lg:w-auto lg:px-10 mx-auto'>
+            <div className='lg:w-1/2 lg: mr-10'>
+              <h2 className='text-white text-3xl font-exo2 font-medium'>
+                Nombre o número
+              </h2>
+              <div className='mb-4 flex flex-row'>
+                <input 
+                  type='text'
+                  name='search'
+                  className='h-12 border-solid border-4 border-[#616161] rounded-md flex-grow' 
+                />
+                <button className='bg-[#ee6b2f]  items-center h-12 w-24 rounded-md ml-16'>
+                  <Image width={25} height={25} src={iconSearch} />
+                </button>
+              </div>
+              <p className='text-white font-exo2 mb-10'>
+                ¡Usa la búsqueda avanzada para encontrar Pokémon por su tipo, 
+                debilidad, habilidad y demás datos!
+              </p>
+            </div>
+
+            <div className='bg-[#4dad5b] items-center hidden lg:flex rounded-sm pt-3 pb-5 px-4 lg:w-1/2'>
+              <h2 className='text-white text-2xl font-exo2 font-medium'>
+                Busca un Pokémon por su nombre o usando su número de la Pokédex Nacional.
+              </h2>
+            </div>
+          </div>
+
+          <div className='bg-[#4dad5b] lg:hidden rounded-sm pt-3 pb-5 px-4'>
+            <h2 className='text-white text-2xl font-exo2 font-medium'>
+              Busca un Pokémon por su nombre o usando su número de la Pokédex Nacional.
+            </h2>
+          </div>
+        
+        </div>
+
+        </section>
+      <div className='content mx-auto md:w-[85%] max-w-7xl'>
 
         <section className='pokemons bg-white px-10'>
 
