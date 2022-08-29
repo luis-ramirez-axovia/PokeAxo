@@ -112,10 +112,6 @@ export default function Home({ data, details }) {
                         <option>{text}</option>
                       )
                     }
-                    <option>Numero inferior</option>
-                    <option>Numero superior</option>
-                    <option>A-Z</option>
-                    <option>Z-A</option>
                   </select>
                 </div>
               </div>
