@@ -8,7 +8,7 @@ const nextConfig = {
   // basePath: '/dist',
   compress: true,
   images: {
-    domains: ['raw.githubusercontent.com']
+    domains: ['raw.githubusercontent.com', 'localhost']
   },
   async redirects() {
     return [

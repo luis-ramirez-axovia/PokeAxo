@@ -4,7 +4,7 @@ import { useEffect, useState} from 'react'
 import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
 
-import { API_POKEMON } from '@constants/utils/apiCalls'
+import { apiUrl, API_POKEMON } from '@constants/utils/apiCalls'
 import Title from '@components/title/Title'
 import TagCard from '@components/tagCard/TagCard'
 
@@ -22,19 +22,21 @@ export default function Home({ data, details }) {
   const router = useRouter();
 
   const locale = router.locale === 'es' ? es : en
-  console.log('locals',locale);
+  // console.log('locals',locale);
 
   useEffect(() => {
     async function fetchData(){
-      const response = await fetch(`${API_POKEMON}?offset=0&limit=12`)
+      const response = await fetch(`${API_POKEMON}?_limit=12`)
       const pokemons = await response.json()
-      const promises = []; 
-      for (let index = 1; index <= 12; index++){
-        promises.push(fetch(`${API_POKEMON}/${index}`).then(resp => resp.json()));
-      }
-      Promise.all(promises).then(res => {
-        setPokemones({ pokemons:pokemons.results, datails:res });
-      })
+      console.log("🚀 ~ file: index.js ~ line 31 ~ fetchData ~ pokemons", pokemons)
+      setPokemones(pokemons)
+      // const promises = []; 
+      // for (let index = 1; index <= 12; index++){
+      //   promises.push(fetch(`${API_POKEMON}/${index}`).then(resp => resp.json()));
+      // }
+      // Promise.all(promises).then(res => {
+      //   setPokemones({ pokemons:pokemons.results, datails:res });
+      // })
     }
     fetchData();
   }, [])
@@ -119,7 +121,7 @@ export default function Home({ data, details }) {
           </div>
           
           <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4'>
-              {pokemones.pokemons && pokemones.pokemons.map((item, index) => (
+              {pokemones && pokemones.map((item, index) => (
                   <div key={index} className='card flex flex-col justify-center items-center bg-[#f2f2f2] rounded-md'>
                     <div className='card-image flex-auto self-center  bg-no-repeat bg-center bg-contain' 
                     >
@@ -127,19 +129,19 @@ export default function Home({ data, details }) {
                           className=''
                           height={200}
                           width={200}
-                          src={`${pokemones.datails[index].sprites.other['official-artwork'].front_default}`} 
+                          src={`${apiUrl}${item.image.url}`} 
                         />
                     </div>
                     <div className='card-content flex flex-col w-full bg-white '>
                       <span className='text-[#919191] text-xs text-start font-exo2 font-bold'>
-                        N.º {pokemones.datails[index].id || '#'}
+                        N.º {item.number || '#'}
                       </span>
                       <h5 className='font-exo2 capitalize text-start font-bold'>
                         {item.name || ''}
                       </h5>
                       <div className='flex mb-4 mt-2'>
-                        {pokemones.datails[index].types.map((type, index) => (
-                          <TagCard key={index} name={type.type.name} />
+                        {item.types.map((type, index) => (
+                          <TagCard key={index} name={type.type} color={type.color} />
                           ))}
                       </div>
                     </div>
@@ -154,22 +156,22 @@ export default function Home({ data, details }) {
   )
 }
 
-export async function getStaticProps() {
-  const getPokemons = async () => {
-    const response = await fetch(`${API_POKEMON}?offset=0&limit=12`)
-    const { results } = await response.json()
-    return results;
-  }
-  const data = await getPokemons();
-  // const details = data.map(async pokemon => await getContent);
-  // const getContent = async (pokemon) => {
-  //   const response = await fetch(pokemon.url)
-  //   return response;
-  // }
-  return {
-    props: {
-      data,
-      // details
-    }
-  }
-}
+// export async function getStaticProps() {
+//   const getPokemons = async () => {
+//     const response = await fetch(`${API_POKEMON}?offset=0&limit=12`)
+//     const { results } = await response.json()
+//     return results;
+//   }
+//   const data = await getPokemons();
+//   // const details = data.map(async pokemon => await getContent);
+//   // const getContent = async (pokemon) => {
+//   //   const response = await fetch(pokemon.url)
+//   //   return response;
+//   // }
+//   return {
+//     props: {
+//       data,
+//       // details
+//     }
+//   }
+// }
