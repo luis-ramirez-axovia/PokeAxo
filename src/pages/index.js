@@ -26,6 +26,7 @@ export default function Home({ data, details }) {
 
   useEffect(() => {
     async function fetchData(){
+      console.log('url', API_POKEMON)
       const response = await fetch(`${API_POKEMON}?_limit=12`)
       const pokemons = await response.json()
       console.log("🚀 ~ file: index.js ~ line 31 ~ fetchData ~ pokemons", pokemons)

@@ -8,7 +8,7 @@ const nextConfig = {
   // basePath: '/dist',
   compress: true,
   images: {
-    domains: ['raw.githubusercontent.com', 'localhost']
+    domains: ['raw.githubusercontent.com', 'localhost', 'pokemon-strapi.herokuapp.com']
   },
   async redirects() {
     return [
