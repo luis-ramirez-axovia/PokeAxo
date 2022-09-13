@@ -12,6 +12,19 @@
 }
 
 @layer components {
+  /* Input */
+  /* input.intput {
+    border
+  } */
+  .form-group{
+    display: flex;
+  }
+  .form-group > *{
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+  }
+
+
   /* Color for tags in cards */
   .background-color-bug {
     background: -webkit-linear-gradient(180deg, #729f3f 50%, #729f3f 50%);
