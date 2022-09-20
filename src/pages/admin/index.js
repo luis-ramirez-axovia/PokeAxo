@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState} from 'react'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
+import { useAppContext } from '@constants/utils/Context'
 
 import { apiUrl, API_POKEMON } from '@constants/utils/apiCalls'
 import Title from '@components/title/Title'
@@ -16,6 +17,7 @@ import es from '@public/locales/es'
 import Link from 'next/link'
 
 export default function Admin({ data, details }) {
+  const { variableState, setVariableState } = useAppContext();
   const router = useRouter();
 
   const locale = router.locale === 'es' ? es : en
@@ -34,8 +36,10 @@ export default function Admin({ data, details }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data)
-    }).then((response) => {
-      console.log(response);
+    }).then( async (response) => {
+      const loginData = await response.json()
+      setVariableState(loginData);
+      Router.push('/admin/dashboard')
     }).catch((error) => {
       console.log('Problema en login', error);
     })
