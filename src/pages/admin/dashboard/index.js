@@ -25,8 +25,26 @@ export default function Admin({ data, details }) {
   return (
     <div className="py-12 bg-content max-w-[1300px] h-[100vh] mx-auto">
       
-      alksfhaklfhaslkfhj
-
+      <div className='bg-gray-500 w-full'>
+        Barra??
+      </div>
+      Barra buscar boton crear
+      <div className='content-list flex justify-center mt-5'>
+        <div className='bg-white w-4/5 shadow-lg rounded-md flex flex-column space-x-5 items-center justify-between'>
+          <p className='ml-4'>#id</p>
+          <Image 
+            height={110} 
+            width={110} 
+            src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"} 
+          />
+          <p>Hououmon</p>
+          <div>tags</div>
+          <div className='buttons'>
+            <button className='bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600'>Editar</button>
+            <button className='ml-2 mr-4'>Editar</button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
