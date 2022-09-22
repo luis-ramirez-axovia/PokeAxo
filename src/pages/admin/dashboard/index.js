@@ -38,10 +38,10 @@ export default function Admin({ data, details }) {
             src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"} 
           />
           <p>Hououmon</p>
-          <div>tags</div>
+          {/* <div>tags</div> */}
           <div className='buttons'>
             <button className='bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600'>Editar</button>
-            <button className='ml-2 mr-4'>Editar</button>
+            <button className='ml-2 mr-4 bg-red-400 text-white rounded-md h-10 w-20 active:bg-red-600'>Editar</button>
           </div>
         </div>
       </div>
