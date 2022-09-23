@@ -18,9 +18,21 @@ import Link from 'next/link'
 
 export default function Admin({ data, details }) {
   const { variableState, setVariableState } = useAppContext();
+  const [ pokemons, setPokemons ] = useState([]);
   const router = useRouter();
 
   const locale = router.locale === 'es' ? es : en
+  
+  useEffect(() => {
+    async function fetchData(){
+      console.log('url', API_POKEMON)
+      const response = await fetch(`${API_POKEMON}?_limit=12`)
+      const pokemons = await response.json()
+      console.log("🚀 ~ file: index.js ~ line 31 ~ fetchData ~ pokemons", pokemons)
+      setPokemons(pokemons)
+    }
+    fetchData();
+  }, [])
 
   return (
     <div className="py-12 bg-content max-w-[1300px] h-[100vh] mx-auto">
@@ -29,21 +41,23 @@ export default function Admin({ data, details }) {
         Barra??
       </div>
       Barra buscar boton crear
-      <div className='content-list flex justify-center mt-5'>
-        <div className='bg-white w-4/5 shadow-lg rounded-md flex flex-column space-x-5 items-center justify-between'>
-          <p className='ml-4'>#id</p>
-          <Image 
-            height={110} 
-            width={110} 
-            src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"} 
-          />
-          <p>Hououmon</p>
-          {/* <div>tags</div> */}
-          <div className='buttons'>
-            <button className='bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600'>Editar</button>
-            <button className='ml-2 mr-4 bg-red-400 text-white rounded-md h-10 w-20 active:bg-red-600'>Editar</button>
+      <div className='content-list flex flex-col items-center justify-center mt-5'>
+        {pokemons.map(item => (
+          <div className='bg-white w-4/5 shadow-lg rounded-md flex flex-column space-x-5 items-center justify-between mt-2'>
+            <p className='ml-4'>#id</p>
+            <Image 
+              height={110} 
+              width={110} 
+              src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"} 
+            />
+            <p>Hououmon</p>
+            {/* <div>tags</div> */}
+            <div className='buttons'>
+              <button className='bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600'>Editar</button>
+              <button className='ml-2 mr-4 bg-red-400 text-white rounded-md h-10 w-20 active:bg-red-600'>Editar</button>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   )
