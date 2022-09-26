@@ -26,7 +26,7 @@ export default function Admin({ data, details }) {
   useEffect(() => {
     async function fetchData(){
       console.log('url', API_POKEMON)
-      const response = await fetch(`${API_POKEMON}?_limit=12`)
+      const response = await fetch(`${API_POKEMON}?_sort=number&_start=0&_limit=12`)
       const pokemons = await response.json()
       console.log("🚀 ~ file: index.js ~ line 31 ~ fetchData ~ pokemons", pokemons)
       setPokemons(pokemons)
@@ -44,13 +44,13 @@ export default function Admin({ data, details }) {
       <div className='content-list flex flex-col items-center justify-center mt-5'>
         {pokemons.map(item => (
           <div className='bg-white w-4/5 shadow-lg rounded-md flex flex-column space-x-5 items-center justify-between mt-2'>
-            <p className='ml-4'>#id</p>
+            <p className='ml-4'>#{item.number}</p>
             <Image 
               height={110} 
               width={110} 
-              src={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"} 
+              src={`${apiUrl}${item.image.url}`} 
             />
-            <p>Hououmon</p>
+            <p>{item.name}</p>
             {/* <div>tags</div> */}
             <div className='buttons'>
               <button className='bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600'>Editar</button>
