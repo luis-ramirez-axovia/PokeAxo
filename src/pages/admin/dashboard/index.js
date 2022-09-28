@@ -7,6 +7,7 @@ import { useAppContext } from '@constants/utils/Context'
 import { apiUrl, API_POKEMON } from '@constants/utils/apiCalls'
 import Title from '@components/title/Title'
 import TagCard from '@components/tagCard/TagCard'
+import Modal from '@components/modal/Modal'
 
 import iconRefresh  from '@public/refresh_white.png'
 import iconPokeball from '@public/pokeball_white.jpg'
@@ -19,6 +20,7 @@ import Link from 'next/link'
 export default function Admin({ data, details }) {
   const { variableState, setVariableState } = useAppContext();
   const [ pokemons, setPokemons ] = useState([]);
+  const [isModalOpen, setIsModalOpen] =useState(false)
   const router = useRouter();
 
   const locale = router.locale === 'es' ? es : en
@@ -33,6 +35,10 @@ export default function Admin({ data, details }) {
     }
     fetchData();
   }, [])
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen)
+  }
 
   return (
     <div className="py-12 bg-content max-w-[1300px] h-[100vh] mx-auto">
@@ -53,12 +59,16 @@ export default function Admin({ data, details }) {
             <p>{item.name}</p>
             {/* <div>tags</div> */}
             <div className='buttons'>
-              <button className='bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600'>Editar</button>
+              <button onClick={toggleModal} className='bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600'>Editar</button>
               <button className='ml-2 mr-4 bg-red-400 text-white rounded-md h-10 w-20 active:bg-red-600'>Editar</button>
             </div>
           </div>
         ))}
       </div>
+        
+      {isModalOpen && 
+      <Modal show={isModalOpen} onClose={toggleModal} title={'titulo'} />
+      }
     </div>
   )
 }
