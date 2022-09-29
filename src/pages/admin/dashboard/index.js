@@ -49,7 +49,7 @@ export default function Admin({ data, details }) {
       Barra buscar boton crear
       <div className='content-list flex flex-col items-center justify-center mt-5'>
         {pokemons.map(item => (
-          <div className='bg-white w-4/5 shadow-lg rounded-md flex flex-column space-x-5 items-center justify-between mt-2'>
+          <div key={item.id} className='bg-white w-4/5 shadow-lg rounded-md flex flex-column space-x-5 items-center justify-between mt-2'>
             <p className='ml-4'>#{item.number}</p>
             <Image 
               height={110} 
