@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { apiUrl } from '@constants/utils/apiCalls';
 import ReactDOM from 'react-dom';
 
-const Modal = ({ show = null, onClose, edit, title = null }) => {
+const Modal = ({ onClose, edit = null, title = null, handleSubmit }) => {
   const [content, setContent] = useState({
     name: null,
     number: null,
@@ -17,7 +17,7 @@ const Modal = ({ show = null, onClose, edit, title = null }) => {
         name: edit.name,
         number: edit.number,
         types: edit.types.map((item) => ({ value: item.id, label: item.type })),
-        image: edit.image.url,
+        image: null,
       });
     }
   }, []);
@@ -26,6 +26,18 @@ const Modal = ({ show = null, onClose, edit, title = null }) => {
     { value: 1, label: ';dato' },
     { value: 2, label: ';dato2' },
   ];
+  const changeName = (e) => {
+    setContent({...content, name: e.target.value })
+  }
+  const changeNumber = (e) => {
+      setContent({...content, number: e.target.value})
+  }
+  const changeTypes = (e) => {
+      setContent({...content, types: e})
+  }
+  const changeImage = (e) => {
+      setContent({...content, image: e.target.files[0]})
+  }
 
   return (
     <div className="py-12 bg-black bg-opacity-75 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
@@ -39,6 +51,7 @@ const Modal = ({ show = null, onClose, edit, title = null }) => {
             id="name"
             name="name"
             value={content.name}
+            onChange={(e) => changeName(e)}
             className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
             placeholder="name"
           />
@@ -49,6 +62,7 @@ const Modal = ({ show = null, onClose, edit, title = null }) => {
             <input
               id="number"
               name="number"
+              onChange={(e) => changeNumber(e)}
               value={content.number}
               className="text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
               placeholder="XX"
@@ -58,21 +72,21 @@ const Modal = ({ show = null, onClose, edit, title = null }) => {
             Tipos
           </label>
           <div className="relative mb-5 mt-2">
-            <Select id="types" name="types" options={options} value={content.types} isMulti />
+            <Select id="types" name="types" options={options} value={content.types} onChange={e => changeTypes(e)} isMulti />
           </div>
           <label htmlFor="image" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
             Image
           </label>
           <div className="relative mb-5 mt-2">
-            {content.image && (
-              <a href={apiUrl + content.image} target="_blank" className="text-blue-600 hover:text-blue-800">
-                Actual: {apiUrl + content.image}
+            {edit && edit.image && edit.image.url && (
+              <a href={apiUrl + edit.image.url} target="_blank" className="text-blue-600 hover:text-blue-800">
+                Actual: {apiUrl + edit.image.url}
               </a>
             )}
-            <input id="image" name="image" type="file" className="mb-8 text-gray-600 focus:outline-none font-normal w-full flex items-center pl-3 text-sm" />
+            <input id="image" name="image" type="file" onChange={e => changeImage(e)} className="mb-8 text-gray-600 focus:outline-none font-normal w-full flex items-center pl-3 text-sm" />
           </div>
           <div className="flex items-center justify-start w-full">
-            <button className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm">
+            <button onClick={() => handleSubmit(content)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm">
               Submit
             </button>
             <button
