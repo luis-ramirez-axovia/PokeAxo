@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAppContext } from '@constants/utils/Context';
 
-import { apiUrl, API_POKEMON } from '@constants/utils/apiCalls';
+import { apiUrl, API_POKEMON, API_UPLOAD_IMAGE, API_DELETE_IMAGE } from '@constants/utils/apiCalls';
 import Modal from '@components/modal/Modal';
 
 export default function Admin({ data, details }) {
@@ -55,21 +55,23 @@ export default function Admin({ data, details }) {
     })
   };
   const handleSubmit = (content) => {
-
     if (editItem) {
       fetch(`${API_POKEMON}/${editItem.id}`, {
         method: 'PUT',
         headers: {
-          // 'Content-Type': 'multipart/form-data',
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + variableState.jwt,
         },
         body: JSON.stringify({ name: content.name, number: content.number, types: content.types.map((i) => i.value) }),
-      }).then(res => {
+      }).then(async res => {
+        
+        const data = await res.json();
+        await insertImage(data, content.image);
+        
         onCloseModal();
         fetchData();
       }).catch(err => {
-        alert('error:', err);
+        console.log('error:', err);
       });
     } else {
       fetch(`${API_POKEMON}`, {
@@ -79,7 +81,11 @@ export default function Admin({ data, details }) {
           Authorization: 'Bearer ' + variableState.jwt,
         },
         body: JSON.stringify({ name: content.name, number: content.number, types: content.types.map((i) => i.value) }),
-      }).then(res => {
+      }).then(async res => {
+
+        const data = await res.json();
+        await insertImage(data, content.image);
+
         onCloseModal();
         fetchData();
       }).catch(err => {
@@ -87,21 +93,35 @@ export default function Admin({ data, details }) {
       });
     }
 
-    // var bodyFormData = new FormData();
-    // bodyFormData.append("files", this.state.dropzoneImage);
-    // bodyFormData.append("ref", "formality");
-    // bodyFormData.append("refId", res.data.id);
-    // bodyFormData.append("field", "file");
-    // axios({
-    //   method: "post",
-    //   url: `${apiUpload}`,
-    //   data: bodyFormData,
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //     Authorization: "Bearer " + this.props.strapiToken,
-    //   },
-    // })
   };
+  const insertImage =async (data, image) => {
+
+    var bodyFormData = new FormData();
+    bodyFormData.append("files", image);
+    bodyFormData.append("ref", "pokemon-item");
+    bodyFormData.append("refId", data.id);
+    bodyFormData.append("field", "image");
+    
+    if(image){
+      if((data.image || {}).id || null){
+        await fetch(`${API_DELETE_IMAGE}/${data.image.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + variableState.jwt,
+          },
+        })
+      }
+      await fetch(`${API_UPLOAD_IMAGE}`, {
+        method: 'POST',
+        headers: {
+          // 'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + variableState.jwt,
+        },
+        body: bodyFormData,
+      })
+    }
+  }
 
   return (
     <div className="py-12 bg-content max-w-[1300px] h-[100vh] mx-auto">
