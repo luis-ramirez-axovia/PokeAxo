@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { useAppContext } from '@constants/utils/Context';
 
@@ -9,7 +9,7 @@ import Modal from '@components/modal/Modal';
 
 export default function Admin({ data, details }) {
   const { variableState, setVariableState } = useAppContext();
-  const [load, setLoad] = useState(0)
+  const [isLoad, setIsLoad] = useState(true)
   const [pokemons, setPokemons] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
@@ -25,6 +25,13 @@ export default function Admin({ data, details }) {
     const response = await fetch(`${API_POKEMON}?_sort=number&_start=0&_limit=12`);
     const pokemons = await response.json();
     setPokemons(pokemons);
+    setIsLoad(false)
+  }
+
+  const handleCloseSession = () => {
+    console.log('cerrar session')
+    setVariableState(null)
+    router.push('/admin')
   }
 
   const toggleModal = () => {
@@ -124,35 +131,47 @@ export default function Admin({ data, details }) {
   }
 
   return (
-    <div className="py-12 bg-content max-w-[1300px] h-[100vh] mx-auto">
-      <div className="bg-gray-500 w-full">Barra??</div>
-      <button onClick={() => OpenModalCreate()} className="bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600">
-        Crear
-      </button>
-      <div className="content-list flex flex-col items-center justify-center mt-5">
-        {pokemons &&
-          pokemons.length > 0 &&
-          pokemons.map((item) => (
-            <div key={item.id} className="bg-white w-4/5 shadow-lg rounded-md flex flex-column space-x-5 items-center justify-between mt-2">
-              <p className="ml-4">#{item.number}</p>
-              {item.image && item.image.url &&
-                <Image height={110} width={110} src={`${apiUrl}${item.image.url}`} />
-              }
-              <p>{item.name}</p>
-              {/* <div>tags</div> */}
-              <div className="buttons">
-                <button onClick={() => OpenEditModal(item)} className="bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600">
-                  Editar
-                </button>
-                <button onClick={() => handleDelete(item)} className="ml-2 mr-4 bg-red-400 text-white rounded-md h-10 w-20 active:bg-red-600">
-                  Eliminar
-                </button>
-              </div>
+    <Fragment>
+      {!isLoad ? 
+        <div className="py-12 bg-content max-w-[1300px] min-w-[320px] h-[100vh] mx-auto">
+          <div className="flex bg-gray-500 w-full h-10 p-5 text-white items-center">
+            <div>Pokemon Yei</div>
+            <div><a onClick={()=> handleCloseSession()} className='hover:text-blue-400 hover:cursor-pointer'>Cerrar Sesion</a></div>
+          </div>
+          <div className='bg-white w-full md:w-4/5 mx-auto h-full min-w-[320px]'>
+            <div className='flex w-full pt-5'>
+              <button onClick={() => OpenModalCreate()} className="bg-blue-400 text-white rounded-md ml-auto h-10 w-full lg:w-80 active:bg-blue-600">
+                Crear
+              </button>
             </div>
-          ))}
-      </div>
-      {isModalOpen && <Modal show={isModalOpen} handleSubmit={handleSubmit} onClose={onCloseModal} edit={editItem} title={'titulo'} />}
-    </div>
+
+            <div className="content-list flex flex-col items-center justify-center my-5">
+              {pokemons &&
+                pokemons.length > 0 &&
+                pokemons.map((item) => (
+                  <div key={item.id} className="bg-white w-full shadow-lg rounded-md flex flex-column space-x-5 items-center justify-between mt-2">
+                    <p className="ml-4 hidden lg:block">#{item.number}</p>
+                    {item.image && item.image.url &&
+                      <Image height={110} width={110} src={`${apiUrl}${item.image.url}`} />
+                    }
+                    <p className='min-w-[150px]'>{item.name}</p>
+                    {/* <div>tags</div> */}
+                    <div className="buttons flex flex-col sm:flex-row">
+                      <button onClick={() => OpenEditModal(item)} className="bg-blue-400 text-white rounded-md h-10 w-20 active:bg-blue-600">
+                        Editar
+                      </button>
+                      <button onClick={() => handleDelete(item)} className="mx-0 sm:ml-2 sm:mr-4 bg-red-400 text-white rounded-md h-10 w-20 active:bg-red-600">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+          {isModalOpen && <Modal show={isModalOpen} handleSubmit={handleSubmit} onClose={onCloseModal} edit={editItem} title={'titulo'} />}
+        </div>
+        : ''}
+    </Fragment>
   );
 }
 
