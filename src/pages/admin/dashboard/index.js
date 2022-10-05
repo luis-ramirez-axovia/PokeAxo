@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Pagination from '@components/pagination/Pagination'
 import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { useAppContext } from '@constants/utils/Context';
@@ -13,17 +14,25 @@ export default function Admin({ data, details }) {
   const [pokemons, setPokemons] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
+  // Paginacion
+  const plus = 1;
+  const [count, setCount] = useState(0)
+  const [pageInit, setPageInit] = useState(0);
+  const [pageEnd, setPageEnd] = useState(pageInit+plus)
   const router = useRouter();
 
   useEffect(() => {
-    if(!variableState){
-      router.push('/admin/');
-    }
+    // if(!variableState){
+    //   router.push('/admin/');
+    // }
     fetchData();
   }, []);
   const fetchData = async () => {
-    const response = await fetch(`${API_POKEMON}?_sort=number&_start=0&_limit=12`);
+    const response = await fetch(`${API_POKEMON}?_sort=number&_start=${pageInit}&_limit=${pageEnd}`);
+    const response2 = await fetch(`${API_POKEMON}/count`);
     const pokemons = await response.json();
+    const count = await response2.json()
+    setCount(count);
     setPokemons(pokemons);
     setIsLoad(false)
   }
@@ -136,7 +145,7 @@ export default function Admin({ data, details }) {
         <div className="py-12 bg-content max-w-[1300px] min-w-[320px] h-[100vh] mx-auto">
           <div className="flex bg-gray-500 w-full h-10 p-5 text-white items-center">
             <div>Pokemon Yei</div>
-            <div><a onClick={()=> handleCloseSession()} className='hover:text-blue-400 hover:cursor-pointer'>Cerrar Sesion</a></div>
+            <div className='ml-auto'><a onClick={()=> handleCloseSession()} className='hover:text-blue-400 hover:cursor-pointe'>Cerrar Sesion</a></div>
           </div>
           <div className='bg-white w-full md:w-4/5 mx-auto h-full min-w-[320px]'>
             <div className='flex w-full pt-5'>
@@ -166,6 +175,7 @@ export default function Admin({ data, details }) {
                     </div>
                   </div>
                 ))}
+                <Pagination inicio={pageInit+1} final={pageEnd} total={count} />
             </div>
           </div>
           {isModalOpen && <Modal show={isModalOpen} handleSubmit={handleSubmit} onClose={onCloseModal} edit={editItem} title={'titulo'} />}
