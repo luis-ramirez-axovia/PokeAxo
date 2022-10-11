@@ -15,10 +15,11 @@ export default function Admin({ data, details }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   // Paginacion
-  const plus = 1;
+  const plus = 4;
   const [count, setCount] = useState(0)
   const [pageInit, setPageInit] = useState(0);
   const [pageEnd, setPageEnd] = useState(pageInit+plus)
+  const [currentPage, setCurrentPage] = useState(0)
   const router = useRouter();
 
   useEffect(() => {
@@ -139,6 +140,10 @@ export default function Admin({ data, details }) {
     }
   }
 
+  const changePaginations = () => {
+
+  } 
+
   return (
     <Fragment>
       {!isLoad ? 
@@ -175,7 +180,7 @@ export default function Admin({ data, details }) {
                     </div>
                   </div>
                 ))}
-                <Pagination inicio={pageInit+1} final={pageEnd} total={count} />
+                <Pagination inicio={pageInit+1} final={pageEnd} total={count} current={currentPage} changePaginations={changePaginations} />
             </div>
           </div>
           {isModalOpen && <Modal show={isModalOpen} handleSubmit={handleSubmit} onClose={onCloseModal} edit={editItem} title={'titulo'} />}
