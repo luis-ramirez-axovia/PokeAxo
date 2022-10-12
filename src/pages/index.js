@@ -130,7 +130,7 @@ export default function Home({ data, details }) {
                           className=''
                           height={200}
                           width={200}
-                          src={`${apiUrl}${item.image.url}`} 
+                          src={`${apiUrl}${item?.image?.url || ''}`} 
                         />
                     </div>
                     <div className='card-content flex flex-col w-full bg-white '>

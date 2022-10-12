@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { apiUrl } from '@constants/utils/apiCalls';
 import ReactDOM from 'react-dom';
 
-const Pagination = ({ inicio, final, total, current, changePaginations }) => {
+const Pagination = ({ inicio, final, total, current, changePaginations, listLength }) => {
   return (
     <>
       <div className="flex items-center w-full justify-between border-t border-gray-200 mt-10 px-4 py-3 sm:px-6">
@@ -43,8 +43,8 @@ const Pagination = ({ inicio, final, total, current, changePaginations }) => {
               {/* <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" --> */}
 
               {total < 9
-                ? Array.apply(null, { length: total }).map((e, i) => (
-                    <a href="#" onClick={() => changePaginations(i)} className={`relative inline-flex items-center px-4 py-2 text-sm font-medium border ${current === i ? 'border-indigo-500 bg-indigo-50 text-indigo-600' : 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'} focus:z-20`}>
+                ? Array.apply(null, { length: Math.ceil(total/listLength) }).map((e, i) => (
+                    <a href="#" onClick={() => changePaginations(i)} className={`relative inline-flex items-center px-4 py-2 text-sm font-medium border ${current === i ? 'border-indigo-500 bg-indigo-50 text-indigo-600 z-30' : 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'} focus:z-20`}>
                       {i+1}
                     </a>
                     // "relative z-10 inline-flex items-center border px-4 py-2 text-sm font-medium     border-indigo-500 bg-indigo-50 text-indigo-600 focus:z-20"

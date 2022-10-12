@@ -27,7 +27,7 @@ export default function Admin({ data, details }) {
     //   router.push('/admin/');
     // }
     fetchData();
-  }, []);
+  }, [currentPage,pageInit,pageEnd]);
   const fetchData = async () => {
     const response = await fetch(`${API_POKEMON}?_sort=number&_start=${pageInit}&_limit=${pageEnd}`);
     const response2 = await fetch(`${API_POKEMON}/count`);
@@ -140,8 +140,14 @@ export default function Admin({ data, details }) {
     }
   }
 
-  const changePaginations = () => {
-
+  const changePaginations = (page) => {
+    // const plus = 4;
+    // const [pageInit, setPageInit] = useState(0);
+    // const [pageEnd, setPageEnd] = useState(pageInit+plus)
+    // const [currentPage, setCurrentPage] = useState(0)
+    setCurrentPage(page)
+    setPageInit(page*plus)
+    setPageEnd((page*plus)+4)
   } 
 
   return (
@@ -180,7 +186,7 @@ export default function Admin({ data, details }) {
                     </div>
                   </div>
                 ))}
-                <Pagination inicio={pageInit+1} final={pageEnd} total={count} current={currentPage} changePaginations={changePaginations} />
+                <Pagination inicio={pageInit+1} final={pageEnd} current={currentPage} total={count} listLength={plus} changePaginations={changePaginations} />
             </div>
           </div>
           {isModalOpen && <Modal show={isModalOpen} handleSubmit={handleSubmit} onClose={onCloseModal} edit={editItem} title={'titulo'} />}
