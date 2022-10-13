@@ -61,7 +61,7 @@ const Pagination = ({ inicio, final, total, current, changePaginations, listLeng
               */}
 
               <a href="#" onClick={() => changePaginations(current >= Math.ceil(total/listLength)-1 ? current : current+1)} className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
-                <span className="sr-only">Next</span>{Math.ceil(total/listLength)}
+                <span className="sr-only">Next</span>
                 {/* <!-- Heroicon name: mini/chevron-right --> */}
                 <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path
