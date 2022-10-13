@@ -29,7 +29,7 @@ const Pagination = ({ inicio, final, total, current, changePaginations, listLeng
           </div>
           <div>
             <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-              <a href="#" className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
+              <a href="#" onClick={() => changePaginations(current > 0 ? current-1 : current)} className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
                 <span className="sr-only">Previous</span>
                 {/* <!-- Heroicon name: mini/chevron-left --> */}
                 <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -60,8 +60,8 @@ const Pagination = ({ inicio, final, total, current, changePaginations, listLeng
               <a href="#" className="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">10</a>
               */}
 
-              <a href="#" className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
-                <span className="sr-only">Next</span>
+              <a href="#" onClick={() => changePaginations(current >= Math.ceil(total/listLength)-1 ? current : current+1)} className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
+                <span className="sr-only">Next</span>{Math.ceil(total/listLength)}
                 {/* <!-- Heroicon name: mini/chevron-right --> */}
                 <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path
