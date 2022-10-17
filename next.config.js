@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    NEXT_PUBLIC_API_DIRECTION_URL: process.env.NEXT_PUBLIC_API_DIRECTION_URL || 'http://localhost:1337',
+  },
   reactStrictMode: true,
   swcMinify: true,
   env: {
