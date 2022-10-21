@@ -1,4 +1,4 @@
-export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+export const apiUrl = process.env.NEXT_PUBLIC_API_DIRECTION_URL;
 
 export const API_MOVES = `${apiUrl}/move`;
 export const API_ABILITY = `${apiUrl}/ability`;

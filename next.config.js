@@ -5,9 +5,6 @@ const nextConfig = {
   },
   reactStrictMode: true,
   swcMinify: true,
-  env: {
-    customKey: 'customValue',
-  },
   // basePath: '/dist',
   compress: true,
   images: {
